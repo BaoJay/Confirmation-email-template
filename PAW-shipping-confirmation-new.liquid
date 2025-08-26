@@ -1,0 +1,421 @@
+{% if fulfillment.item_count == item_count %}
+  {% capture email_title %}Your order is on the way{% endcapture %}
+  {% capture email_body %}We're so happy to let you know — Your order is <strong>on its way</strong>. You can now track every paw-step! 🐾 💌 (Tracking may take a few hours to update depending on the carrier.){% endcapture %}
+{% elsif fulfillment.item_count > 1 %}
+  {% if fulfillment_status == 'fulfilled' %}
+    {% capture email_title %}The last items in your order are on the way{% endcapture %}
+    {% capture email_body %}We're so happy to let you know — The last items in your order are <strong>on its way</strong>. You can now track every paw-step! 🐾 💌 (Tracking may take a few hours to update depending on the carrier.){% endcapture %}
+  {% else %}
+    {% capture email_title %}Some items in your order are on the way{% endcapture %}
+    {% capture email_body %}We're so happy to let you know — Some items in your order are <strong>on its way</strong>. You can now track every paw-step! 🐾 💌 (Tracking may take a few hours to update depending on the carrier.){% endcapture %}
+  {% endif %}
+{% else %}
+  {% if fulfillment_status == 'fulfilled' %}
+    {% capture email_title %}The last item in your order is on the way{% endcapture %}
+    {% capture email_body %}We're so happy to let you know — The last item in your order is <strong>on its way</strong>. You can now track every paw-step! 🐾 💌 (Tracking may take a few hours to update depending on the carrier.){% endcapture %}
+  {% else %}
+    {% capture email_title %}One item in your order is on the way{% endcapture %}
+    {% capture email_body %}We're so happy to let you know — One item in your order is <strong>on its way</strong>. You can now track every paw-step! 🐾 💌 (Tracking may take a few hours to update depending on the carrier.){% endcapture %}
+  {% endif %}
+{% endif %}
+
+{% capture email_emphasis %}Estimated delivery date: <strong>{{fulfillment.estimated_delivery_at | date: format: 'date'}}</strong>{% endcapture %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{{ email_title }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" href="/assets/notifications/styles.css">
+    <style>
+      .button__cell {
+        background: {{ shop.email_accent_color }};
+      }
+      a, a:hover, a:active, a:visited {
+        color: {{ shop.email_accent_color }};
+      }
+      /* 2. Áp lên toàn bộ body / heading / paragraph */
+      body,
+      p,
+      td,
+      th,
+      h1,
+      h2,
+      h3,
+      a {
+        font-family: 'Harmonia Sans', Arial, sans-serif !important;
+      }
+      h1,h2,h3 {
+        margin: 10px 0;
+      }
+      .section {
+        max-width: 90%;
+        margin: 0 auto;
+      }
+      .container {
+        position: relative;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .container .column,
+      .container .columns {
+        margin-left: calc(20px / 2);
+        margin-right: calc(20px / 2);
+      }
+      .one-whole {
+        width: calc(100% - 20px);
+      }
+      .order-list__item-variant strong,
+      .order-list__item-variant a {
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section class="section">
+      <div class="container">
+        <div class="one-whole column">
+          <div class="one-whole column">
+            <div class="shop-name__cell">
+              {%- if shop.email_logo_url %}
+                <img
+                  src="{{ shop.email_logo_url }}"
+                  alt="{{ shop.name }}"
+                  width="{{ shop.email_logo_width }}"
+                  height="{{ shop.email_logo_height }}"
+                >
+              {%- else %}
+                <h1 class="shop-name__text">
+                  <a href="{{shop.url}}">{{ shop.name }}</a>
+                </h1>
+              {%- endif %}
+            </div>
+
+            <div class="order-number__cell">
+              <span class="order-number__text"> Order {{ order_name }} </span>
+            </div>
+            {%- if po_number %}
+              <div class="order-number__cell">
+                <span class="order-number__text"> PO number #{{ po_number }} </span>
+              </div>
+            {%- endif %}
+          </div>
+
+          <div class="one-whole column">
+            <h2>{{ email_title }}</h2>
+            <br>
+            <p>{{ email_body }}</p>
+            <div class="subtotal-table__small-space"></div>
+
+            {% comment %} ===================== Fulfillment details ===================== {% endcomment %}
+            {% if fulfillment.estimated_delivery_at %}
+              <p>{{ email_emphasis }}</p>
+              <div class="subtotal-table__small-space"></div>
+            {% endif %}
+
+            {% comment %} ===================== View your order button ===================== {% endcomment %}
+            {% comment %}  
+              {% if order_status_url %}
+                <div class="one-whole column">
+                  <div class="button__cell">
+                    <a href="{{ order_status_url }}" class="button__text">View your order</a>
+                  </div>
+                  {% if shop.url %}
+                    <div class="link secondary-action-cell one-whole column">
+                      <div class="link__cell">or <a href="{{ shop.url }}">Visit our store</a></div>
+                    </div>
+                  {% endif %}
+                  <div class="subtotal-table__small-space"></div>
+                </div>
+              {% else %}
+                {% if shop.url %}
+                  <div class="row actions one-whole column">
+                    <div class="actions__cell">
+                      <div class="button main-action-cell">
+                        <div class="button__cell">
+                          <a href="{{ shop.url }}" class="button__text">Visit our store</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="subtotal-table__small-space"></div>
+                  </div>
+                {% endif %}
+              {% endif %}
+            {% endcomment %}
+
+            {% comment %} ===================== Tracking number ===================== {% endcomment %}
+            {% if fulfillment.tracking_numbers.size > 0 %}
+              <p class="disclaimer__subtext">
+                {% if fulfillment.tracking_numbers.size == 1
+                  and fulfillment.tracking_company
+                  and fulfillment.tracking_url
+                  %}
+                  <div class="button__cell">
+                    <a href="{{ fulfillment.tracking_url }}" class="button__text">Check my order status</a>
+                  </div>
+                {% elsif fulfillment.tracking_numbers.size == 1 %}
+                  Tracking number: {{ fulfillment.tracking_numbers.first }}
+                {% else %}
+                  {{ fulfillment.tracking_company }} tracking numbers:<br>
+                  {% for tracking_number in fulfillment.tracking_numbers %}
+                    {% if fulfillment.tracking_urls[forloop.index0] %}
+                      <div class="button__cell">
+                        <a href="{{ fulfillment.tracking_urls[forloop.index0] }}" class="button__text">Check my order status</a>
+                    </div>
+                    {% else %}
+                      {{ tracking_number }}
+                    {% endif %}
+                    <br>
+                  {% endfor %}
+                {% endif %}
+              </p>
+              <div class="subtotal-table__small-space"></div>
+              <p class="order-list__item-variant">Instruction: Add your tracking number to Pawuni order tracking page
+                <span>
+                <a href="{{ fulfillment.tracking_url }}">
+                {{ fulfillment.tracking_numbers.first }}
+                </a>
+                </span>
+              </p>
+            {% endif %}
+          </div>
+
+          {% comment %} ===================== Items in this shipment ===================== {% endcomment %}
+          <div class="one-whole column">
+            <div class="subtotal-table__small-space"></div>
+            <h3>Items in this shipment</h3>
+            {% for line in fulfillment.fulfillment_line_items %}
+              <div class="order-list__item">
+                <div class="order-list__item__cell" style="min-height: 100px; display: flex;">
+                  {% assign expand_bundles = false %}
+                  {% if expand_bundles and line.line_item.bundle_parent? %}
+                    <div class="order-list__parent-image-cell">
+                      {% if line.line_item.image %}
+                        <img
+                          src="{{ line.line_item | img_url: 'compact_cropped' }}"
+                          align="left"
+                          width="100"
+                          height="100"
+                          class="order-list__product-image"
+                        >
+                      {% else %}
+                        <div class="order-list__no-image-cell">
+                          <img
+                            src="{{ 'notifications/no-image.png' | shopify_asset_url }}"
+                            align="left"
+                            width="100"
+                            height="100"
+                            class="order-list__no-product-image"
+                          >
+                        </div>
+                      {% endif %}
+                    </div>
+                  {% else %}
+                    <div class="order-list__image-cell">
+                      {% if line.line_item.image %}
+                        <img
+                          src="{{ line.line_item | img_url: 'compact_cropped' }}"
+                          align="left"
+                          width="100"
+                          height="100"
+                          class="order-list__product-image"
+                        >
+                      {% else %}
+                        <div class="order-list__no-image-cell">
+                          <img
+                            src="{{ 'notifications/no-image.png' | shopify_asset_url }}"
+                            align="left"
+                            width="100"
+                            height="100"
+                            class="order-list__no-product-image"
+                          >
+                        </div>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                  <div class="order-list__product-description-cell">
+                    {% liquid
+                      if line.line_item.presentment_title 
+                        assign line_title = line.line_item.presentment_title 
+                      elsif line.line_item.title 
+                        assign line_title = line.line_item.title 
+                      else 
+                        assign line_title = line.line_item.product.title 
+                      endif 
+                      if line.quantity < line.line_item.quantity 
+                        assign line_display = line.quantity | append: ' of ' | append: line.line_item.quantity
+                      else 
+                        assign line_display = line.line_item.quantity 
+                      endif 
+                    %}
+
+                    <span class="order-list__item-title">{{- line_title }}&nbsp;&times;&nbsp;{{ line_display -}}</span
+                    ><br>
+
+                    {% if line.line_item.variant.title != 'Default Title' and line.line_item.bundle_parent? == false %}
+                      <span class="order-list__item-variant">{{ line.line_item.variant.title }}</span><br>
+                    {% elsif line.line_item.variant.title != 'Default Title'
+                      and line.line_item.bundle_parent?
+                      and expand_bundles == false
+                    %}
+                      <span class="order-list__item-variant">{{ line.line_item.variant.title }}</span><br>
+                    {% endif %}
+
+                    {% if expand_bundles %}
+                      {% for component in line.line_item.bundle_components %}
+                        <table>
+                          <tr class="order-list__item">
+                            <td class="order-list__bundle-item">
+                              <table>
+                                <td class="order-list__image-cell">
+                                  {% if component.image %}
+                                    <img
+                                      src="{{ component | img_url: 'compact_cropped' }}"
+                                      align="left"
+                                      width=60"
+                                      height="60"
+                                      class="order-list__product-image small"
+                                    >
+                                  {% else %}
+                                    <div class="order-list__no-image-cell small">
+                                      <img
+                                        src="{{ 'notifications/no-image.png' | shopify_asset_url }}"
+                                        align="left"
+                                        width="60"
+                                        height="60"
+                                        class="order-list__no-product-image small"
+                                      >
+                                    </div>
+                                  {% endif %}
+                                </td>
+
+                                <td class="order-list__product-description-cell">
+                                  {% if component.product.title %}
+                                    {% assign component_title = component.product.title %}
+                                  {% else %}
+                                    {% assign component_title = component.title %}
+                                  {% endif %}
+
+                                  {% assign component_display = component.quantity %}
+
+                                  <span class="order-list__item-title">
+                                    {{- component_display }}&nbsp;&times;&nbsp;
+                                    {{- component_title -}}</span
+                                  ><br>
+
+                                  {% if component.variant.title != 'Default Title' %}
+                                    <span class="order-list__item-variant">
+                                      {{- component.variant.title -}}
+                                    </span>
+                                  {% endif %}
+                                </td>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      {% endfor %}
+                    {% else %}
+                      {% for group in line.line_item.groups %}
+                        <span class="order-list__item-variant">Part of: {{ group.display_title }}</span><br>
+                      {% endfor %}
+                    {% endif %}
+
+                    {% if line.line_item.selling_plan_allocation %}
+                      <span class="order-list__item-variant">
+                        {{- line.line_item.selling_plan_allocation.selling_plan.name -}}</span
+                      ><br>
+                    {% endif %}
+
+                    {% if line.line_item.refunded_quantity > 0 %}
+                      <span class="order-list__item-refunded">Refunded</span>
+                    {% endif %}
+
+                    {% if line.line_item.discount_allocations %}
+                      {% for discount_allocation in line.line_item.discount_allocations %}
+                        {% if discount_allocation.discount_application.target_selection != 'all' %}
+                          <p>
+                            <span class="order-list__item-discount-allocation">
+                              <img
+                                src="{{ 'notifications/discounttag.png' | shopify_asset_url }}"
+                                width="20"
+                                height="20"
+                                class="discount-tag-icon"
+                              >
+                              <span>
+                                {{ discount_allocation.discount_application.title | upcase }}
+                                (-{{ discount_allocation.amount | money }})
+                              </span>
+                            </span>
+                          </p>
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          {% comment %} ===================== Worried something ===================== {% endcomment %}
+          <div class="subtotal-table__small-space"></div>
+          <div class="subtotal-table__line"></div>
+          <div class="subtotal-table__small-space"></div>
+          <div class="one-whole column">
+            <h3>❗ Worried something might go wrong?</h3>
+            <p>
+              We totally understand — things like shipping delays, damaged items, or missing packages can happen sometimes (though rarely!).
+            </p>
+            <h4 style="font-weight: bold; margin-top: 10px;">Here how's we handle it:</h4>
+            <p>
+            <strong>Step 1:</strong> We review your order and tracking information right away.<br>
+            <strong>Step 2:</strong> We investigate the issue—contacting the carrier (or you, if needed) to gather all the details.
+            <br>
+            <strong>Step 3:</strong> We'll make it right—resend, refund, or recover your package.
+            </p>
+          </div>
+
+          {% comment %} ===================== Worried something ===================== {% endcomment %}
+          <div class="subtotal-table__small-space"></div>
+          <div class="subtotal-table__line"></div>
+          <div class="subtotal-table__small-space"></div>
+          <div class="one-whole column">
+            <h3>🌟 Once it arrives…</h3>
+            <p>
+              We'd be so grateful if you <strong>shared your experience</strong>. Your kind words help other pet lovers find something special, too.<br><br>
+              Thank you again for being part of our small, pet-loving community.<br>
+              We can't wait for you to receive your package — and we hope it brings joy from the moment you open it.<br><br>
+              With love,<br>
+              — The Pawuni Store 🐾
+            </p>
+          </div>
+
+          {% comment %} ===================== Contact Us ===================== {% endcomment %}
+          <div class="subtotal-table__small-space"></div>
+          <div class="subtotal-table__line"></div>
+          <div class="subtotal-table__small-space"></div>
+          <div class="one-whole column">
+            <p class="order-list__item-variant" style="text-align: center; font-weight: bold;">How to Contact Us</p>
+            <p class="order-list__item-variant">
+              If you need help, we're here for you:<br>
+              <strong>Email:</strong> <a href="mailto:{{ shop.email }}">{{ shop.email }}</a><br>
+              <strong>Live Chat:</strong> Available directly on our website <a href="{{ shop.url }}">{{ shop.url }}</a
+              ><br>
+              <strong>Contact Form:</strong> <a href="https://pawuni.com/pages/contact-us">Fill out here</a> and our
+              team will get back to you quickly.
+            </p>
+          </div>
+
+          {% comment %}
+            <p class="disclaimer__subtext">
+              If you have any questions, reply to this email or contact us at
+              <a href="mailto:{{ shop.email }}">{{ shop.email }}</a>
+            </p>
+          {% endcomment %}
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
