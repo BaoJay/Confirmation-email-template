@@ -109,28 +109,29 @@
             {% for line in subtotal_line_items %}
               <div class="order-list__item">
                 <div class="order-list__item__cell" style="min-height: 100px;">
-                  {% assign customizationId = line.properties.customization_id %}
-                  {% if customizationId %}
-                    {% assign numberOfPartss = customizationId | split: '-' | size %}
-                    {% capture customizationImage %}https://cdn.teeinblue.com/{% unless numberOfPartss == 1 %}platform-{% endunless %}customizations/{{ customizationId }}.jpg{% endcapture %}
-
-                    <img
-                      src="{{ customizationImage }}"
-                      alt="artwork design"
-                      align="left"
-                      width="100"
-                      height="100"
-                      class="order-list__product-image"
-                    >
-                  {% elsif line.image %}
-                    <img
-                      src="{{ line.image | image_url: width: 100, height: 100 }}"
-                      alt="artwork design"
-                      align="left"
-                      width="100"
-                      height="100"
-                      class="order-list__product-image"
-                    >
+                  {% assign customizationImage = line.properties._customization_image %}
+                  {% if line.image %}
+                    {% if customizationImage %}
+                      <img alt="artwork design" src="{{ customizationImage }}" align="left" width="100" height="100">
+                    {% else %}
+                      <img
+                        src="{{ line | img_url: 'compact_cropped' }}"
+                        align="left"
+                        width="100"
+                        height="100"
+                        class="order-list__product-image"
+                      >
+                    {% endif %}
+                  {% else %}
+                    <div class="order-list__no-image-cell">
+                      <img
+                        src="{{ 'notifications/no-image.png' | shopify_asset_url }}"
+                        align="left"
+                        width="100"
+                        height="100"
+                        class="order-list__no-product-image"
+                      >
+                    </div>
                   {% endif %}
 
                   <div class="order-list__product-description-cell">
