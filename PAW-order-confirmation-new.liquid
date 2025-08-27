@@ -134,7 +134,7 @@
                       >
                     </div>
                   {% endif %}
-                  
+
                   <div class="order-list__product-description-cell">
                     {% liquid
                       if line.product.title
@@ -412,8 +412,8 @@
                 {% endif %}
               {% endif %}
             {% endfor %}
-          {% endif %
-}
+          {% endif %}
+
           {% if transaction_size > 1 or transaction_amount < total_price %}
             <div class="row subtotal-div">
               {% for transaction in transactions %}
