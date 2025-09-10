@@ -66,6 +66,7 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
             - Email được gửi đến recipient
           {% endcomment %}
 
+
           {% comment %} Shop Logo {% endcomment %}
           {% if shop.email_logo_url %}
             <table align="center" class="giftcard__doubletopmargin">
@@ -82,17 +83,14 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
             </table>
           {% endif %}
 
-          <h1>
-            Trường hợp có gift_card.recipient: {{ recipient_name }}, you have received a gift card from
-            {{ sender_name }}.
-          </h1>
-
+          {% comment %} Email Title {% endcomment %}
           <table align="center" class="row giftcard__topmargin">
             <tr>
               <td class="giftcard__title">{{ email_title }}</td>
             </tr>
           </table>
 
+          {% comment %} Gift card message {% endcomment %}
           {% if gift_card.recipient and gift_card.message != blank %}
             <table align="center" class="row giftcard__topmargin">
               <tr>
@@ -101,6 +99,7 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
             </table>
           {% endif %}
 
+          {% comment %} Gift card balance and expiration date {% endcomment %}
           <table align="center" class="giftcard__topmargin">
             <tr>
               <td class="giftcard__balance">{{ gift_card.initial_value | money_with_currency }}</td>
@@ -112,6 +111,7 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
             {% endif %}
           </table>
 
+          {% comment %} Gift card image {% endcomment %}
           <table align="center" class="giftcard__doubletopmargin">
             <tr>
               <td>
@@ -125,12 +125,14 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
             </tr>
           </table>
 
+          {% comment %} Shop name {% endcomment %}
           <table align="center" class="row giftcard__topmargin">
             <tr>
               <td class="giftcard__shop_name">{{ shop.name }}</td>
             </tr>
           </table>
 
+          {% comment %} Gift card code {% endcomment %}
           <table align="center" class="row giftcard__topmargin">
             <tr>
               <td class="giftcard__smalltext">Use the gift card code online</td>
@@ -142,6 +144,7 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
             </tr>
           </table>
 
+          {% comment %} Action buttons {% endcomment %}
           <table class="row actions">
             <tr>
               <td class="actions__cell">
@@ -161,6 +164,7 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
             </tr>
           </table>
 
+          {% comment %} Add to Apple Wallet button {% endcomment %}
           {% if gift_card.pass_url %}
             <table align="center" class="row">
               <tr>
@@ -177,6 +181,7 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
               </tr>
             </table>
           {% endif %}
+        {% endif %}
 
         {% else %}
           {% comment %}
@@ -201,11 +206,6 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
               </tr>
             </table>
           {% endif %}
-
-          <h1>
-            Trường hợp KHÔNG CÓ gift_card.recipient: {{ recipient_name }}, you have received a gift card from
-            {{ sender_name }}.
-          </h1>
 
           {% comment %} Gift card message {% endcomment %}
           {% if gift_card.recipient and gift_card.message != blank %}
