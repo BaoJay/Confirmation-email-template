@@ -30,28 +30,29 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
     <title>{{ email_title }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" type="text/css" href="/assets/notifications/styles.css">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/assets/notifications/styles.css">
     <style>
       .button__cell {
         background: {
-            {
-            shop.email_accent_color
-          }
-        }
+        {
+        shop.email_accent_color
       }
+    }
+  }
 
-      a,
-      a:hover,
-      a:active,
-      a:visited {
-        color: {
-            {
-            shop.email_accent_color
-          }
-        }
-
-        ;
-      }
+  a,
+  a:hover,
+  a:active,
+  a:visited {
+    color: {
+    {
+    shop.email_accent_color
+  }
+};
+}
     </style>
   </head>
 
@@ -66,7 +67,6 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
             - Email được gửi đến recipient
           {% endcomment %}
 
-
           {% comment %} Shop Logo {% endcomment %}
           {% if shop.email_logo_url %}
             <table align="center" class="giftcard__doubletopmargin">
@@ -76,8 +76,7 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
                     src="{{shop.email_logo_url}}"
                     alt="{{ shop.name }}"
                     class="giftcard__logosize"
-                    width="{{ shop.email_logo_width }}"
-                  >
+                    width="{{ shop.email_logo_width }}">
                 </td>
               </tr>
             </table>
@@ -119,8 +118,7 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
                   src="{{ 'gift-card/card.jpg' | shopify_asset_url }}"
                   alt="Gift card image"
                   width="240"
-                  height="160"
-                >
+                  height="160">
               </td>
             </tr>
           </table>
@@ -150,7 +148,9 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
               <td class="actions__cell">
                 <table align="center" class="button">
                   <tr>
-                    <td class="button__cell"><a href="{{ shop.url }}" class="button__text">Visit online store</a></td>
+                    <td class="button__cell">
+                      <a href="{{ shop.url }}" class="button__text">Visit online store</a>
+                    </td>
                   </tr>
                 </table>
                 <table align="center" class="button">
@@ -174,14 +174,12 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
                       src="{{ 'gift-card/add-to-apple-wallet.png' | shopify_asset_url }}"
                       alt="Add to Apple Wallet"
                       width="120"
-                      height="40"
-                    >
+                      height="40">
                   </a>
                 </td>
               </tr>
             </table>
           {% endif %}
-        {% endif %}
 
         {% else %}
           {% comment %}
@@ -200,8 +198,7 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
                     src="{{shop.email_logo_url}}"
                     alt="{{ shop.name }}"
                     class="giftcard__logosize"
-                    width="{{ shop.email_logo_width }}"
-                  >
+                    width="{{ shop.email_logo_width }}">
                 </td>
               </tr>
             </table>
@@ -236,8 +233,7 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
                   src="{{ 'gift-card/card.jpg' | shopify_asset_url }}"
                   alt="Gift card image"
                   width="240"
-                  height="160"
-                >
+                  height="160">
               </td>
             </tr>
           </table>
@@ -267,7 +263,9 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
               <td class="actions__cell">
                 <table align="center" class="button">
                   <tr>
-                    <td class="button__cell"><a href="{{ shop.url }}" class="button__text">Visit online store</a></td>
+                    <td class="button__cell">
+                      <a href="{{ shop.url }}" class="button__text">Visit online store</a>
+                    </td>
                   </tr>
                 </table>
                 <table align="center" class="button">
@@ -291,8 +289,7 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
                       src="{{ 'gift-card/add-to-apple-wallet.png' | shopify_asset_url }}"
                       alt="Add to Apple Wallet"
                       width="120"
-                      height="40"
-                    >
+                      height="40">
                   </a>
                 </td>
               </tr>
@@ -308,7 +305,10 @@ Hi {{ recipient_name }}, you have received a gift card from {{ sender_name }}.
           </p>
         </table>
 
-        <img src="{{ 'notifications/spacer.png' | shopify_asset_url }}" class="spacer" height="1">
+        <img
+          src="{{ 'notifications/spacer.png' | shopify_asset_url }}"
+          class="spacer"
+          height="1">
       </tr>
     </table>
   </body>
