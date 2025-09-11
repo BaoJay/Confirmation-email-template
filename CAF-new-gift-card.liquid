@@ -24,6 +24,24 @@
   {% endcapture %}
 {% endif %}
 
+{% capture email_content %}
+  Hi {{ gift_card.customer.name | default: 'there' }},<br>
+  Thank you for your purchase! 🎉<br>
+  Here's your <strong>{{ gift_card.initial_value | money_with_currency }} Gift Card</strong>, ready to use anytime on customizeaf.com.
+{% endcapture %}
+{% capture gift_card_instructions %}
+  <p>🌟 <strong>How to Use:</strong></p>
+  <ol>
+    <li>Visit <a href="https://customizeaf.com">customizeaf.com</a></li>
+    <li>Add your favorite items to cart</li>
+    <li>Enter your Gift Card code at checkout</li>
+  </ol>
+  <p>
+    No extra fees, no waiting — just instant holiday cheer. Please note: gift cards are non-refundable and redeemable online only at CustomizeAF.<br>
+    Wishing you a season filled with love, laughter, and meaningful moments,<br>
+    <strong>The CustomizeAF Team ❤️</strong>
+  </p>
+{% endcapture %}
 <!doctype html>
 <html lang='en'>
   <head>
@@ -36,23 +54,15 @@
       href='/assets/notifications/styles.css'>
     <style>
       .button__cell {
-        background: {
-        {
-        shop.email_accent_color
+        background: {{ shop.email_accent_color }};
       }
-    }
-  }
 
-  a,
-  a:hover,
-  a:active,
-  a:visited {
-    color: {
-    {
-    shop.email_accent_color
-  }
-};
-}
+      a,
+      a:hover,
+      a:active,
+      a:visited {
+        color: {{ shop.email_accent_color }};
+      }
     </style>
   </head>
 
@@ -89,6 +99,16 @@
             </tr>
           </table>
 
+          {% comment %} Email Content {% endcomment %}
+          <table
+            align='center'
+            class='giftcard__doubletopmargin'
+            style="margin: 20px 30px 0;">
+            <tr>
+              <td class='giftcard__text' style="text-align: left;">{{ email_content }}</td>
+            </tr>
+          </table>
+
           {% comment %} Gift card message {% endcomment %}
           {% if gift_card.recipient and gift_card.message != blank %}
             <table align='center' class='row giftcard__topmargin'>
@@ -180,6 +200,16 @@
               </tr>
             </table>
           {% endif %}
+
+          {% comment %} Gift Card Instruction {% endcomment %}
+          <table
+            align='center'
+            class='giftcard__doubletopmargin'
+            style="margin: 20px 30px 0;">
+            <tr>
+              <td class='giftcard__text' style="text-align: left;">{{ gift_card_instructions }}</td>
+            </tr>
+          </table>
 
         {% else %}
           {% comment %}
@@ -204,6 +234,16 @@
             </table>
           {% endif %}
 
+          {% comment %} Email Content {% endcomment %}
+          <table
+            align='center'
+            class='giftcard__doubletopmargin'
+            style="margin: 20px 30px 0;">
+            <tr>
+              <td class='giftcard__text' style="text-align: left;">{{ email_content }}</td>
+            </tr>
+          </table>
+
           {% comment %} Gift card message {% endcomment %}
           {% if gift_card.recipient and gift_card.message != blank %}
             <table align='center' class='row giftcard__topmargin'>
@@ -258,23 +298,26 @@
           </table>
 
           {% comment %} Action buttons {% endcomment %}
-          <table class='row actions'>
+          <table
+            align="center"
+            class="row actions"
+            style="margin: 0 40px;">
             <tr>
-              <td class='actions__cell'>
-                <table align='center' class='button'>
+              <td class="actions__cell">
+                <div class="button">
                   <tr>
-                    <td class='button__cell'>
-                      <a href='{{ shop.url }}' class='button__text'>Visit online store</a>
+                    <td class="button__cell">
+                      <a href="{{ shop.url }}" class="button__text">Visit online store</a>
                     </td>
                   </tr>
-                </table>
-                <table align='center' class='button'>
+                </div>
+                <div class="button">
                   <tr>
-                    <td class='link__cell'>
-                      <a href='{{ gift_card.url }}' class='link__text'>View gift card balance</a>
+                    <td class="link__cell">
+                      <a href="{{ gift_card.url }}" class="link__text">View gift card balance</a>
                     </td>
                   </tr>
-                </table>
+                </div>
               </td>
             </tr>
           </table>
@@ -295,6 +338,16 @@
               </tr>
             </table>
           {% endif %}
+
+          {% comment %} Gift Card Instruction {% endcomment %}
+          <table
+            align='center'
+            class='giftcard__doubletopmargin'
+            style="margin: 20px 30px 0;">
+            <tr>
+              <td class='giftcard__text' style="text-align: left;">{{ gift_card_instructions }}</td>
+            </tr>
+          </table>
         {% endif %}
 
         {% comment %} Footer {% endcomment %}
