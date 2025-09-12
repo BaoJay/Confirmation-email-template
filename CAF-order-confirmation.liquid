@@ -16,7 +16,6 @@
     {% endif %}
   {% endif %}
 {% endcapture %}
-
 {% liquid
   capture email_title
     echo 'Order Confirmation - ' | append: order_name
@@ -29,12 +28,18 @@
     <title>{{ email_title }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" type="text/css" href="/assets/notifications/styles.css">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/assets/notifications/styles.css">
     <style type="text/css">
       .button__cell {
         background: {{ shop.email_accent_color }};
       }
-      a, a:hover, a:active, a:visited {
+      a,
+      a:hover,
+      a:active,
+      a:visited {
         color: {{ shop.email_accent_color }};
       }
       /* 2. Áp lên toàn bộ body / heading / paragraph */
@@ -46,9 +51,13 @@
       h2,
       h3,
       a {
-        font-family: 'Harmonia Sans', Arial, sans-serif !important;
+        font-family: 'Harmonia Sans'
+        , Arial
+        , sans-serif !important;
       }
-      h1,h2,h3 {
+      h1,
+      h2,
+      h3 {
         margin: 10px 0;
       }
       .section {
@@ -83,8 +92,7 @@
                   src="{{ shop.email_logo_url }}"
                   alt="{{ shop.name }}"
                   width="{{ shop.email_logo_width }}"
-                  height="{{ shop.email_logo_height }}"
-                >
+                  height="{{ shop.email_logo_height }}">
               {%- else %}
                 <h1 class="shop-name__text">
                   <a href="{{shop.url}}">{{ shop.name }}</a>
@@ -93,7 +101,9 @@
             </div>
 
             <div class="order-number__cell">
-              <span class="order-number__text"> Order {{ order_name }} </span>
+              <span class="order-number__text">
+                Order {{ order_name }}
+              </span>
             </div>
           </div>
 
@@ -112,15 +122,19 @@
                   {% assign customizationImage = line.properties._customization_image %}
                   {% if line.image %}
                     {% if customizationImage %}
-                      <img alt="artwork design" src="{{ customizationImage }}" align="left" width="100" height="100">
+                      <img
+                        alt="artwork design"
+                        src="{{ customizationImage }}"
+                        align="left"
+                        width="100"
+                        height="100">
                     {% else %}
                       <img
                         src="{{ line | img_url: 'compact_cropped' }}"
                         align="left"
                         width="100"
                         height="100"
-                        class="order-list__product-image"
-                      >
+                        class="order-list__product-image">
                     {% endif %}
                   {% else %}
                     <div class="order-list__no-image-cell">
@@ -129,8 +143,7 @@
                         align="left"
                         width="100"
                         height="100"
-                        class="order-list__no-product-image"
-                      >
+                        class="order-list__no-product-image">
                     </div>
                   {% endif %}
 
@@ -180,8 +193,7 @@
                               src="{{ 'notifications/discounttag.png' | shopify_asset_url }}"
                               width="18"
                               height="18"
-                              class="discount-tag-icon"
-                            >
+                              class="discount-tag-icon">
                             <span>
                               {{ discount_allocation.discount_application.title | upcase }}
                               (-{{ discount_allocation.amount | money }})
@@ -235,8 +247,7 @@
                           src="{{ 'notifications/discounttag.png' | shopify_asset_url }}"
                           width="18"
                           height="18"
-                          class="discount-tag-icon"
-                        >
+                          class="discount-tag-icon">
                         <span class="subtotal-line__discount-title">{{ discount_title }}</span>
                       </span>
                     </p>
@@ -327,7 +338,8 @@
 
             {% if total_discounts > 0 %}
               <p class="total-discount">
-                You saved <span class="total-discount--amount">{{ total_discounts | money }}</span>
+                You saved
+                <span class="total-discount--amount">{{ total_discounts | money }}</span>
               </p>
               <div class="subtotal-table__small-space"></div>
             {% endif %}
@@ -388,9 +400,10 @@
                         class="customer-info__item-credit"
                         height="24"
                         width="24"
-                        alt="{{ transaction.payment_details.credit_card_company }}"
-                      >
-                      <span> ending with {{ transaction.payment_details.credit_card_last_four_digits }} </span>
+                        alt="{{ transaction.payment_details.credit_card_company }}">
+                      <span>
+                        ending with {{ transaction.payment_details.credit_card_last_four_digits }}
+                      </span>
                     </p>
                   {% elsif transaction.gateway_display_name == 'Gift card' %}
                     <p class="customer-info__item-content">
@@ -398,8 +411,7 @@
                         src="{{ transaction.gateway_display_name | downcase | replace: ' ', '-'  | payment_type_img_url }}"
                         class="customer-info__item-credit"
                         height="24"
-                        width="24"
-                      >
+                        width="24">
                       ending with
                       {{ transaction.payment_details.gift_card.last_four_characters | upcase }} —
                       <strong>{{ transaction.amount | money }}</strong><br>
@@ -470,7 +482,9 @@
               </div>
               {% if shop.url %}
                 <div class="link secondary-action-cell one-whole column">
-                  <div class="link__cell">or <a href="{{ shop.url }}">Visit our store</a></div>
+                  <div class="link__cell">or
+                    <a href="{{ shop.url }}">Visit our store</a>
+                  </div>
                 </div>
               {% endif %}
               <div class="subtotal-table__small-space"></div>
@@ -488,7 +502,7 @@
                 <div class="subtotal-table__small-space"></div>
               </div>
             {% endif %}
-          {% endif %}
+        {% endif %}
 
           {% comment %} ===================== Gift Card ===================== {% endcomment %}
           {% assign gift_card_line_item = line_items | where: 'gift_card' %}
@@ -502,7 +516,7 @@
           {% comment %} ===================== Thank You for buying ===================== {% endcomment %}
           <div class="one-whole column">
             <p>
-              At CustomizeAF, every order is treated with care and attention — because we believe gifts for pet lovers
+              At CustomizeAF, every order is treated with care and attention — because we believe gifts for pet lovers    
               should be just as thoughtful as the bond they celebrate.<br>
               Thank you for choosing us to be part of your special moments!
             </p>
@@ -516,7 +530,8 @@
             <h3>Need to Make a Change?</h3>
             <p>
               If anything in your customization or shipping address needs to be updated, please
-              <strong style="color: {{ shop.email_accent_color }}">contact us within 5 hours</strong> so we can catch it
+              <strong style="color: {{ shop.email_accent_color }}">contact us within 5 hours</strong>
+              so we can catch it    
               before production starts.
             </p>
           </div>
@@ -529,9 +544,13 @@
             <h3>How to Contact Us</h3>
             <p>
               If you need help, we're here for you:<br>
-              📧 Email: <a href="mailto:{{ shop.email }}">{{ shop.email }}</a><br>
-              💬 Live Chat: Available directly on our website <a href="{{ shop.url }}">{{ shop.url }}</a><br>
-              📄 <a href="https://customizeaf.com/pages/contact">Fill out this form</a> and our team will get back to
+              📧 Email:
+              <a href="mailto:{{ shop.email }}">{{ shop.email }}</a><br>
+              💬 Live Chat: Available directly on our website
+              <a href="{{ shop.url }}">{{ shop.url }}</a><br>
+              📄
+              <a href="https://customizeaf.com/pages/contact">Fill out this form</a>
+              and our team will get back to    
               you quickly.<br>
               We'll follow up soon with your tracking details once your order ships.<br>
               Thanks again for being part of the Customizeaf family!
@@ -543,10 +562,14 @@
 
           {% comment %}
             <p class="disclaimer__subtext">
-              If you have any questions, reply to this email or contact us at
-              <a href="mailto:{{ shop.email }}">{{ shop.email }}</a>
+            If you have any questions, reply to this email or contact us at
+            <a href="mailto:{{ shop.email }}">{{ shop.email }}</a>
             </p>
           {% endcomment %}
+          <img
+            src='{{ 'notifications/spacer.png' | shopify_asset_url }}'
+            class='spacer'
+            height='1'>
         </div>
       </div>
     </section>
