@@ -28,21 +28,21 @@
   <p>
   Hi {{ gift_card.customer.name | default: 'there' }},<br>
   Thank you for your purchase! 🎉<br>
-  Here's your <strong>{{ gift_card.initial_value | money_with_currency }} Gift Card</strong>, ready to use anytime on customizeaf.com.
+  Here's your <strong>{{ gift_card.initial_value | money_with_currency }} Gift Card</strong>, ready to use anytime on {{ shop.url }}.
   </p>
 {% endcapture %}
 {% capture gift_card_instructions %}
   <p>🌟 <strong>How to Use:</strong></p>
   <ol style="margin-top: 5px;">
-    <li>Visit <a href="https://customizeaf.com">customizeaf.com</a></li>
+    <li>Visit <a href="{{ shop.url }}">{{ shop.url }}</a></li>
     <li>Add your favorite items to cart</li>
     <li>Enter your Gift Card code at checkout</li>
   </ol>
   <p>
-    No extra fees, no waiting — just instant holiday cheer. Please note: gift cards are non-refundable and redeemable online only at CustomizeAF.<br>
+    No extra fees, no waiting — just instant holiday cheer. Please note: gift cards are non-refundable and redeemable online only at {{ shop.name }}.<br>
     Wishing you a season filled with love, laughter, and meaningful moments,<br>
     <br>
-    <strong>The CustomizeAF Team ❤️</strong>
+    <strong>The {{ shop.name }} Team ❤️</strong>
   </p>
 {% endcapture %}
 <!doctype html>
