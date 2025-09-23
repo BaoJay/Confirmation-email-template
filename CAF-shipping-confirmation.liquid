@@ -388,7 +388,7 @@
               Thank you again for being part of our small community.<br>
               We can't wait for you to receive your package — and we hope it brings joy from the moment you open it.<br><br>
               With love,<br>
-              — CustomizeAF™ Team
+              — {{ shop.name }}™ Team
             </p>
           </div>
 
@@ -403,7 +403,7 @@
               <strong>Email:</strong> <a href="mailto:{{ shop.email }}">{{ shop.email }}</a><br>
               <strong>Live Chat:</strong> Available directly on our website <a href="{{ shop.url }}">{{ shop.url }}</a
               ><br>
-              <strong>Contact Form:</strong> <a href="https://customizeaf.com/pages/contact">Fill out here</a> and our
+              <strong>Contact Form:</strong> <a href="{{ shop.url }}/pages/contact">Fill out here</a> and our
               team will get back to you quickly.
             </p>
           </div>
@@ -414,6 +414,11 @@
               <a href="mailto:{{ shop.email }}">{{ shop.email }}</a>
             </p>
           {% endcomment %}
+          
+          <img
+            src="{{ 'notifications/spacer.png' | shopify_asset_url }}"
+            class='spacer'
+            height='1'>
         </div>
       </div>
     </section>
